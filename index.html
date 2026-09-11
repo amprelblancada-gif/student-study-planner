@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Study Planner</title>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-punch"></div>
+    <p class="login-kicker">Welcome back</p>
+    <h1 class="login-title">Student Study<br>Planner</h1>
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginId">Student ID / username</label>
+        <input id="loginId" type="text" placeholder="2023-04582" required>
+      </div>
+      <div class="field">
+        <label for="loginPw">Password</label>
+        <input id="loginPw" type="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="btn-primary">Log in</button>
+    </form>
+    <div class="login-links">
+      <button type="button" id="forgotBtn">Forgot password?</button>
+    </div>
+    <p class="forgot-note" id="forgotNote">Ask your instructor or the registrar's office to reset it for you.</p>
+  </div>
+</div>
+
+<div id="landingScreen">
+  <div class="landing-top">
+    <span class="landing-brand">Study Planner</span>
+    <button class="btn" style="border-color:var(--paper-text);color:var(--paper-text);" id="landingLogout">Log out</button>
+  </div>
+
+  <div class="landing-hero">
+    <p class="landing-kicker" id="landingGreeting">Welcome back</p>
+    <h1 class="landing-title">You're all set for the week.</h1>
+    <p class="landing-sub">Here's where your subjects, tasks and study sessions live — everything in one place, so you always know what's next.</p>
+    <button class="btn btn-fill" id="landingEnterBtn" style="padding:12px 26px;font-size:14.5px;">Go to my dashboard</button>
+  </div>
+
+  <div class="landing-stats" id="landingStats"></div>
+
+  <div class="landing-features">
+    <div class="landing-feature">
+      <div class="landing-feature-title">Planner</div>
+      <div class="landing-feature-text">Day, week and month views of every study session, with subject, location and priority.</div>
+    </div>
+    <div class="landing-feature">
+      <div class="landing-feature-title">Tasks</div>
+      <div class="landing-feature-text">Track assignments by due date and priority, and check them off as you go.</div>
+    </div>
+    <div class="landing-feature">
+      <div class="landing-feature-title">Goals</div>
+      <div class="landing-feature-text">Set targets for yourself and watch your progress bar fill up.</div>
+    </div>
+    <div class="landing-feature">
+      <div class="landing-feature-title">Reminders</div>
+      <div class="landing-feature-text">Assignments, exams and sessions surfaced automatically before they sneak up on you.</div>
+    </div>
+  </div>
+</div>
+
+
+<div id="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-name">Study Planner</div>
+      <div class="brand-sub" id="brandSub">BS Computer Science</div>
+    </div>
+    <ul class="nav" id="navList"></ul>
+    <button class="sidebar-profile" id="sidebarProfileBtn">
+      <span class="avatar" id="sidebarAvatar">AC</span>
+      <span>
+        <span class="sidebar-profile-name" id="sidebarName">Ana Cruz</span><br>
+        <span class="sidebar-profile-id">View profile</span>
+      </span>
+    </button>
+  </aside>
+
+  <main class="main">
+
+    <section class="view" id="view-dashboard">
+      <div class="topbar">
+        <div>
+          <h1 class="welcome" id="welcomeMsg">Good morning, Ana.</h1>
+          <div class="today-date" id="todayDate"></div>
+        </div>
+        <div class="quick-actions">
+          <button class="btn" id="qaAddTask">+ Add task</button>
+          <button class="btn" id="qaAddSchedule">+ Add schedule</button>
+          <button class="btn btn-fill" id="qaViewPlanner">View planner</button>
+        </div>
+      </div>
+
+      <div class="stat-row" id="statRow"></div>
+
+      <div class="two-col">
+        <div>
+          <div class="section">
+            <div class="section-head">
+              <h2 class="section-title">Today's study schedule</h2>
+              <button class="section-link" data-goto="planner">View planner</button>
+            </div>
+            <ul class="row-list" id="todayScheduleList"></ul>
+          </div>
+
+          <div class="section">
+            <div class="section-head">
+              <h2 class="section-title">Upcoming tasks</h2>
+              <button class="section-link" data-goto="tasks">View all</button>
+            </div>
+            <ul class="row-list" id="upcomingTasksList"></ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="section">
+            <div class="section-head">
+              <h2 class="section-title">Upcoming exams</h2>
+              <button class="section-link" data-goto="reminders">View all</button>
+            </div>
+            <ul class="row-list" id="upcomingExamsList"></ul>
+          </div>
+
+          <div class="section">
+            <div class="section-head">
+              <h2 class="section-title">Study progress</h2>
+              <button class="section-link" data-goto="subjects">View subjects</button>
+            </div>
+            <div id="progressList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="view" id="view-planner">
+      <div class="topbar">
+        <div>
+          <h1 class="welcome">My study planner</h1>
+          <div class="today-date">Keep track of every session, subject and room.</div>
+        </div>
+        <button class="btn btn-fill" id="plannerAddBtn">+ Add schedule</button>
+      </div>
+
+      <div class="planner-toggle" id="plannerToggle">
+        <button data-mode="day" class="active">Day</button>
+        <button data-mode="week">Week</button>
+        <button data-mode="month">Month</button>
+      </div>
+
+      <div class="planner-date-nav">
+        <button class="nav-arrow" id="plannerPrev">‹</button>
+        <span class="cur-label" id="plannerCurLabel"></span>
+        <button class="nav-arrow" id="plannerNext">›</button>
+      </div>
+
+      <div id="plannerBody"></div>
+    </section>
+
+
+    <section class="view" id="view-tasks">
+      <div class="topbar">
+        <div>
+          <h1 class="welcome">Tasks &amp; to-do list</h1>
+          <div class="today-date">Everything due, in one list.</div>
+        </div>
+        <button class="btn btn-fill" id="tasksAddBtn">+ Add task</button>
+      </div>
+
+      <div class="filter-bar" id="taskFilterBar">
+        <button class="filter-chip active" data-filter="all">All</button>
+        <button class="filter-chip" data-filter="pending">Pending</button>
+        <button class="filter-chip" data-filter="completed">Completed</button>
+        <button class="filter-chip" data-filter="high">High priority</button>
+      </div>
+
+      <ul class="row-list" id="taskList" style="border-top:1px solid var(--paper-line);"></ul>
+    </section>
+
+
+    <section class="view" id="view-subjects">
+      <div class="topbar">
+        <div>
+          <h1 class="welcome">Subjects</h1>
+          <div class="today-date">Your course load this term.</div>
+        </div>
+        <button class="btn btn-fill" id="subjectsAddBtn">+ Add subject</button>
+      </div>
+      <div id="subjectList"></div>
+    </section>
+
+
+    <section class="view" id="view-goals">
+      <div class="topbar">
+        <div>
+          <h1 class="welcome">Study goals</h1>
+          <div class="today-date">What you're working toward.</div>
+        </div>
+        <button class="btn btn-fill" id="goalsAddBtn">+ Add goal</button>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2 class="section-title">In progress</h2></div>
+        <div id="goalList"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2 class="section-title">Completed goals</h2></div>
+        <div class="completed-goals" id="completedGoalList"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-reminders">
+      <div class="topbar">
+        <div>
+          <h1 class="welcome">Reminders</h1>
+          <div class="today-date">Assignments, exams and sessions coming up.</div>
+        </div>
+      </div>
+      <div id="reminderBody"></div>
+    </section>
+
+ 
+    <section class="view" id="view-profile">
+      <div class="topbar">
+        <h1 class="welcome">Profile</h1>
+      </div>
+
+      <div class="profile-header">
+        <div class="avatar-lg" id="profileAvatar">AC</div>
+        <div>
+          <div class="profile-name" id="profileName">Ana Cruz</div>
+          <div class="profile-course" id="profileCourseLine">BS Computer Science • 3rd year</div>
+        </div>
+      </div>
+
+      <div class="profile-fields" id="profileFields"></div>
+
+      <div class="dialog-actions" style="justify-content:flex-start;margin-top:26px;">
+        <button class="btn" id="editProfileBtn">Edit profile</button>
+        <button class="btn btn-accent" id="logoutBtn">Log out</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<dialog id="taskDialog">
+  <div class="dialog-inner">
+    <h3 class="dialog-title" id="taskDialogTitle">Add task</h3>
+    <form id="taskForm">
+      <input type="hidden" id="taskEditId">
+      <div class="dialog-field">
+        <label for="taskName">Task name</label>
+        <input id="taskName" type="text" placeholder="Finish chapter 1" required>
+      </div>
+      <div class="dialog-row">
+        <div class="dialog-field">
+          <label for="taskSubject">Subject</label>
+          <select id="taskSubject" required></select>
+        </div>
+        <div class="dialog-field">
+          <label for="taskDue">Due date</label>
+          <input id="taskDue" type="date" required>
+        </div>
+      </div>
+      <div class="dialog-field">
+        <label for="taskPriority">Priority</label>
+        <select id="taskPriority">
+          <option value="High">High</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn" data-close="taskDialog">Cancel</button>
+        <button type="submit" class="btn btn-fill">Save task</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="scheduleDialog">
+  <div class="dialog-inner">
+    <h3 class="dialog-title" id="scheduleDialogTitle">Add schedule</h3>
+    <form id="scheduleForm">
+      <input type="hidden" id="scheduleEditId">
+      <div class="dialog-field">
+        <label for="scheduleSubject">Subject</label>
+        <select id="scheduleSubject" required></select>
+      </div>
+      <div class="dialog-row">
+        <div class="dialog-field">
+          <label for="scheduleDate">Date</label>
+          <input id="scheduleDate" type="date" required>
+        </div>
+        <div class="dialog-field">
+          <label for="scheduleTime">Study time</label>
+          <input id="scheduleTime" type="time" required>
+        </div>
+      </div>
+      <div class="dialog-field">
+        <label for="scheduleLocation">Location</label>
+        <input id="scheduleLocation" type="text" placeholder="Room 204, Library…" required>
+      </div>
+      <div class="dialog-field">
+        <label for="schedulePriority">Priority</label>
+        <select id="schedulePriority">
+          <option value="High">High</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn" data-close="scheduleDialog">Cancel</button>
+        <button type="submit" class="btn btn-fill">Save schedule</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="goalDialog">
+  <div class="dialog-inner">
+    <h3 class="dialog-title" id="goalDialogTitle">Add goal</h3>
+    <form id="goalForm">
+      <input type="hidden" id="goalEditId">
+      <div class="dialog-field">
+        <label for="goalName">Goal name</label>
+        <input id="goalName" type="text" placeholder="Finish React fundamentals" required>
+      </div>
+      <div class="dialog-field">
+        <label for="goalTarget">Target date</label>
+        <input id="goalTarget" type="date" required>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn" data-close="goalDialog">Cancel</button>
+        <button type="submit" class="btn btn-fill">Save goal</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<dialog id="subjectDialog">
+  <div class="dialog-inner">
+    <h3 class="dialog-title">Add subject</h3>
+    <form id="subjectForm">
+      <div class="dialog-field">
+        <label for="subjectName">Subject name</label>
+        <input id="subjectName" type="text" placeholder="Web Development" required>
+      </div>
+      <div class="dialog-field">
+        <label for="subjectInstructor">Instructor</label>
+        <input id="subjectInstructor" type="text" placeholder="Prof. R. Santos" required>
+      </div>
+      <div class="dialog-field">
+        <label for="subjectSchedule">Class schedule</label>
+        <input id="subjectSchedule" type="text" placeholder="Mon/Wed 8:00–9:30 AM" required>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn" data-close="subjectDialog">Cancel</button>
+        <button type="submit" class="btn btn-fill">Save subject</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<div id="toast"></div>
